@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="bin/www" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="/usr/bin/nodejs" path-to-js-file="app.js" application-parameters="test" working-dir="$PROJECT_DIR$">
+    <envs>
+      <env name="DEBUG" value="App_MySql1:*" />
+    </envs>
+    <browser url="http://localhost:3000/" />
+    <method />
+  </configuration>
+</component>
