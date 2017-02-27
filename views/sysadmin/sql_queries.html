@@ -63,16 +63,7 @@
                     };
                     button.domNode.firstChild.setAttribute("style","width:120px;");
                 };
-
                 detailContentSQL.addButtonTo(leftContentSQL,"PC_speed_550","PC_speed_550.sql");
-//                detailContentSQL.addButtonTo(leftContentSQL,"detail_view_cash","mobile_detail_view_cash.sql");
-//                detailContentSQL.addButtonTo(leftContentSQL,"detail_view_other","mobile_detail_view_other.sql");
-//                detailContentSQL.addButtonTo(leftContentSQL,"detail_view_returns","mobile_detail_view_returns.sql");
-//                detailContentSQL.addButtonTo(leftContentSQL,"detail_view_sales","mobile_detail_view_sales.sql");
-//                detailContentSQL.addButtonTo(leftContentSQL,"main_view","mobile_main_view.sql");
-//                detailContentSQL.addButtonTo(leftContentSQL,"main_view_d","mobile_main_view_d.sql");
-//                detailContentSQL.addButtonTo(leftContentSQL,"units","mobile_units.sql");
-
                 var btnRunSQL = APP.initElem("sql_runBtn", Button,{});
                 var btnSaveSQl = APP.initElem("sql_saveBtn", Button,{});
                 var sql_params= document.getElementById("sql_params");
@@ -108,11 +99,11 @@
                         var foundPos = text.indexOf(target, pos);
                         if (foundPos < 0)break;
                         paramName = text.substring(foundPos, text.indexOf(" ", foundPos));
-                        if (paramName.indexOf("\n") > -1) {
+                        if (paramName.indexOf("\n") != -1) {
                             paramName = paramName.substring(0, paramName.indexOf("\n"));
                             paramName = paramName.trim();
                         }
-                        if (paramName.indexOf("+") > -1) paramName = paramName.substring(0, paramName.indexOf("+"));
+                        if (paramName.indexOf("+") != -1) paramName = paramName.substring(0, paramName.indexOf("+"));
                         if (paramNameMap.length == 0) paramNameMap.push(paramName);
                         else if (paramNameMap.indexOf(paramName) < 0)paramNameMap.push(paramName);
                         pos = foundPos + 1;
@@ -134,6 +125,7 @@
                         label.htmlFor = id;
                         label.innerText = "" + paramNamesMap[i];
                         label.setAttribute("id", "ladel" + id);
+
                         var textBox = document.createElement("input");
                         textBox.setAttribute("name", id);
                         textBox.setAttribute("id", id);
@@ -143,38 +135,13 @@
                     }
                 };
                 topContentSQL.setParamsDefaultValues = function() {
-                    var bdate = document.getElementById("BDATE");
-                    var edate = document.getElementById("EDATE");
-                    var stocksList = document.getElementById("StocksList");
-                    if (bdate) {
-                        var startOfYear = moment().startOf('year').format('YYYY-MM-DD');
-                        bdate.setAttribute("value", startOfYear);
-                    }
-                    if (edate) {
-                        var now = moment().format('YYYY-MM-DD');
-                        edate.setAttribute("value", now);
-                    }
-                    if (stocksList) stocksList.setAttribute("value", "1");
                 };
                 btnRunSQL.onClick = function () {
-                   // var bdate="0";var edate="0"; var stocksList="0";
-                    var newQueryText = document.getElementById("sql_display_content").value;                            console.log("newQueryText=",newQueryText);
+                    var newQueryText = document.getElementById("sql_display_content").value;
                     displayQueryResultSQl.innerHTML = "";
-//                    var condition="";
-//                    for (var i = 0; i < inputParamsList.length; i++) {
-//                        var input=inputParamsList[i];
-//                        if (condition.length!=0)condition+="&";
-//                        condition+=input.id+"="+input.value;
-
-//
-//                        if (input.id == "BDATE") bdate = input.value;
-//                        if (input.id == "EDATE") edate = input.value;
-//                        if (input.id == "Stocklist") stocksList = input.value;
-                   // }
                     Request.postJSONData({
                                 url: "/sysadmin/sql_queries/get_result_to_request",
                                 condition:"",
-                              //  condition: "bdate=" + bdate + "&edate=" + edate + "&stocksList=" + stocksList,
                                 data: {text: newQueryText}, consoleLog: true
                             },
                             function (success, data) {

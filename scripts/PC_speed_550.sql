@@ -1,2 +1,3 @@
 
-select * from PC where speed > 550;
+
+select * from PC where speed > ? AND price < ? ;

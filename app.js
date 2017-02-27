@@ -3,7 +3,6 @@ function startupMode(){
   if(app_params.length==0) return 'production';
   return app_params[0];
 }
-
 module.exports.startupMode = startupMode;
 
 var fs = require('fs');
@@ -18,7 +17,6 @@ app.use(bodyParser.text());
 app.use('/',express.static('public'));
 var database = require('./dataBase');
 var ConfigurationError, DBConnectError;
-
 
 tryLoadConfiguration();
 function tryLoadConfiguration(){
@@ -39,10 +37,6 @@ function tryDBConnect(postaction) {
     if (postaction)postaction(err);
   });
 }
-
-
-
-
 app.get("/sysadmin", function(req, res){
   res.sendFile(path.join(__dirname, '/views', 'sysadmin.html'));
 });
@@ -93,21 +87,15 @@ app.post("/sysadmin/startup_parameters/store_app_config_and_reconnect", function
       }
   );
 });
-
 app.get("/sysadmin/sql_queries", function (req, res) {
   res.sendFile(path.join(__dirname, '/views/sysadmin', 'sql_queries.html'));
 });
 app.get("/sysadmin/sql_queries/get_script", function (req, res) {
   res.send(fs.readFileSync('./scripts/'+req.query.filename, 'utf8'));
 });
-
-app.post("/sysadmin/sql_queries/get_result_to_request", function (req, res) {                                           console.log("/sysadmin/sql_queries/get_result_to_request");
-
+app.post("/sysadmin/sql_queries/get_result_to_request", function (req, res) {
   var newQuery = req.body;
-  //var sUnitlist = req.query.stocksList;
-  //var bdate = req.query.bdate;
-  //var edate = req.query.edate;
-  database.getResultToNewQuery(newQuery,
+  database.getResultToNewQuery(newQuery,/*speed,*/
       function (err,result) {
         var outData = {};
         if (err) outData.error = err.message;
@@ -116,32 +104,4 @@ app.post("/sysadmin/sql_queries/get_result_to_request", function (req, res) {   
       }
   );
 });
-//app.post("/sysadmin/sql_queries/save_sql_file", function (req, res) {
-//  var newQuery = req.body;
-//  var filename= req.query.filename;
-//  fs.writeFile("./scripts/"+filename, newQuery.text, function (err) {
-//    var outData = {};
-//    if(err)outData.error=err.message;
-//    outData.success="Файл сохранен!";
-//    res.send(outData);
-//  });
-//});
-
-
-
-
-//app.use('/',express.static('public'));
-//
-//app.get('/', function(req, resp) {
-//  connection.query("SELECT * FROM Product", function (error, rows, fields) {
-//   if(error){
-//     console.log("Error in the query");
-//   }else{
-//     console.log("Successful query!\n");
-//     console.log(rows);
-//     resp.send(rows);
-//   }
-//  })
-
-//});
 app.listen(port);
